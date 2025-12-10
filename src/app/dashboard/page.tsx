@@ -6,6 +6,7 @@ import { ImageGrid, type SlotState } from "@/components/dashboard/ImageGrid";
 import { ProfileForm } from "@/components/dashboard/ProfileForm";
 import { supabaseClient } from "@/lib/supabaseClient";
 import type { UsersCustom } from "@/types/user";
+import { useSearchParams } from "next/navigation";
 
 const bucketName =
   process.env.NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET || "user-images";
@@ -13,7 +14,7 @@ const bucketName =
 type ViewState =
   | { status: "loading" }
   | { status: "unauthenticated" }
-  | { status: "ready"; user: User };
+  | { status: "ready"; user: { id: string; email: string | null } };
 
 type Banner = { kind: "success" | "error"; message: string } | null;
 
@@ -24,6 +25,8 @@ export default function DashboardPage() {
   const [banner, setBanner] = useState<Banner>(null);
   const [slotStates, setSlotStates] = useState<Record<number, SlotState>>({});
   const [loadingProfile, setLoadingProfile] = useState(false);
+  const searchParams = useSearchParams();
+  const token = searchParams?.get("token");
 
   const publicStorageBaseUrl = useMemo(() => {
     const base = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -124,9 +127,45 @@ export default function DashboardPage() {
   );
 
   useEffect(() => {
-    if (viewState.status !== "ready") return;
-    void loadProfileWithState(viewState.user);
-  }, [loadProfileWithState, viewState]);
+    async function bootstrap() {
+      if (token) {
+        const response = await fetch(`/api/dashboard?token=${token}`);
+        const payload = (await response.json().catch(() => ({}))) as {
+          profile?: UsersCustom;
+          error?: string;
+        };
+
+        if (!response.ok || !payload.profile) {
+          setViewState({ status: "unauthenticated" });
+          setBanner({
+            kind: "error",
+            message: payload.error ?? "Invalid or expired token.",
+          });
+          return;
+        }
+
+        setViewState({
+          status: "ready",
+          user: { id: payload.profile.id, email: payload.profile.email },
+        });
+        setProfile(normalizeProfile(payload.profile));
+        return;
+      }
+
+      const { data, error } = await supabaseClient.auth.getUser();
+      if (error || !data.user) {
+        setViewState({ status: "unauthenticated" });
+        return;
+      }
+      setViewState({ status: "ready", user: data.user });
+    }
+    void bootstrap();
+  }, [normalizeProfile, token]);
+
+  useEffect(() => {
+    if (viewState.status !== "ready" || token) return;
+    void loadProfileWithState(viewState.user as User);
+  }, [loadProfileWithState, token, viewState]);
 
   function handleProfileChange(key: keyof UsersCustom, value: string) {
     if (!profile) return;
@@ -146,12 +185,13 @@ export default function DashboardPage() {
       q3: profile.q3?.trim() || null,
     };
 
-    const { error } = await supabaseClient
-      .from("users_custom")
-      .update(payload)
-      .eq("id", profile.id);
+    const response = await fetch("/api/user", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: profile.id, updates: payload }),
+    });
 
-    if (error) {
+    if (!response.ok) {
       setBanner({
         kind: "error",
         message: "Failed to update profile. Please try again.",
@@ -185,37 +225,49 @@ export default function DashboardPage() {
     updateSlotState(slotIndex, { uploading: true, error: undefined, fileName: file.name });
 
     const extension = file.name.split(".").pop() || "bin";
-    const path = `user-images/${profile.id}/image${slotIndex}-${Date.now()}.${extension}`;
+    const path = `${bucketName}/${profile.id}/image${slotIndex}-${Date.now()}.${extension}`;
 
-    const { error: uploadError } = await supabaseClient.storage
-      .from(bucketName)
-      .upload(path, file, { upsert: true });
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("path", path);
 
-    if (uploadError) {
+    const uploadResponse = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!uploadResponse.ok) {
+      const payload = (await uploadResponse.json().catch(() => ({}))) as {
+        error?: string;
+      };
       updateSlotState(slotIndex, {
         uploading: false,
-        error: uploadError.message ?? "Upload failed.",
+        error: payload.error ?? "Upload failed.",
       });
       return;
     }
 
     const fieldName = `image${slotIndex}_path` as keyof UsersCustom;
-    const { data, error: updateError } = await supabaseClient
-      .from("users_custom")
-      .update({ [fieldName]: path })
-      .eq("id", profile.id)
-      .select("*")
-      .single();
+    const response = await fetch("/api/user", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: profile.id, updates: { [fieldName]: path } }),
+    });
 
-    if (updateError || !data) {
+    const payload = (await response.json().catch(() => ({}))) as {
+      data?: UsersCustom;
+      error?: string;
+    };
+
+    if (!response.ok || !payload.data) {
       updateSlotState(slotIndex, {
         uploading: false,
-        error: updateError?.message ?? "Could not save image path.",
+        error: payload.error ?? "Could not save image path.",
       });
       return;
     }
 
-    setProfile(normalizeProfile(data));
+    setProfile(normalizeProfile(payload.data));
     updateSlotState(slotIndex, { uploading: false, error: undefined });
   }
 
@@ -238,14 +290,8 @@ export default function DashboardPage() {
             Not logged in
           </h1>
           <p className="mt-2 text-sm text-slate-600">
-            Please sign in to access your dashboard.
+            Please use your magic link to access your dashboard.
           </p>
-          <a
-            href="/login"
-            className="mt-4 inline-flex items-center justify-center rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-950 transition hover:bg-emerald-400"
-          >
-            Go to login
-          </a>
         </div>
       </main>
     );

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabaseServer";
 
-const bucketName = process.env.SUPABASE_STORAGE_BUCKET ?? "uploads";
+const bucketName = process.env.SUPABASE_STORAGE_BUCKET ?? "user-images";
 
 export const runtime = "nodejs";
 
@@ -9,6 +9,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
+    const customPath = formData.get("path");
 
     if (!(file instanceof File)) {
       return NextResponse.json(
@@ -19,7 +20,10 @@ export async function POST(request: Request) {
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     const extension = file.name.split(".").pop() || "bin";
-    const path = `uploads/${crypto.randomUUID()}.${extension}`;
+    const path =
+      typeof customPath === "string" && customPath.length > 0
+        ? customPath
+        : `${bucketName}/${crypto.randomUUID()}.${extension}`;
 
     const { error: uploadError } = await supabaseServer.storage
       .from(bucketName)
