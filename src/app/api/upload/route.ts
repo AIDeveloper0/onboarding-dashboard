@@ -26,9 +26,11 @@ export async function POST(request: Request) {
       .upload(path, fileBuffer, { contentType: file.type, upsert: false });
 
     if (uploadError) {
+      const status =
+        (uploadError as { statusCode?: number }).statusCode ?? 500;
       return NextResponse.json(
         { error: uploadError.message },
-        { status: uploadError.statusCode ?? 500 },
+        { status },
       );
     }
 
