@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ImageGrid, type SlotState } from "@/components/dashboard/ImageGrid";
 import { ProfileForm } from "@/components/dashboard/ProfileForm";
 import { supabaseClient } from "@/lib/supabaseClient";
@@ -19,7 +19,7 @@ type ViewState =
 
 type Banner = { kind: "success" | "error"; message: string } | null;
 
-export default function DashboardPage() {
+function DashboardInner() {
   const [viewState, setViewState] = useState<ViewState>({ status: "loading" });
   const [profile, setProfile] = useState<UsersCustom | null>(null);
   const [profileSaving, setProfileSaving] = useState(false);
@@ -335,5 +335,22 @@ export default function DashboardPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+          <div className="inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-500" />
+            Loading dashboard...
+          </div>
+        </main>
+      }
+    >
+      <DashboardInner />
+    </Suspense>
   );
 }
