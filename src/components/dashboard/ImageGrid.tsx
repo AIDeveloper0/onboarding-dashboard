@@ -31,16 +31,16 @@ export function ImageGrid({
   ];
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-md">
+    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_24px_80px_-32px_rgba(0,0,0,0.7)] backdrop-blur">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200">
             Images
           </p>
-          <h2 className="mt-1 text-xl font-semibold text-slate-900">
+          <h2 className="mt-1 text-xl font-semibold text-white">
             Upload up to 7 images
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-200/80">
             Each upload saves the storage path back to your profile.
           </p>
         </div>

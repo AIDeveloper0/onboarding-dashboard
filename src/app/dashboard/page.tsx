@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 const bucketName =
-  process.env.NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET || "user-images";
+  process.env.NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET || "uploads";
 
 type ViewState =
   | { status: "loading" }
@@ -265,9 +265,9 @@ function DashboardInner() {
 
   if (viewState.status === "loading" || loadingProfile) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-        <div className="inline-flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-500" />
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 px-4 text-slate-50">
+        <div className="inline-flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-50 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] backdrop-blur">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-300/40 border-t-emerald-200" />
           Loading dashboard...
         </div>
       </main>
@@ -276,12 +276,12 @@ function DashboardInner() {
 
   if (viewState.status === "unauthenticated") {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-          <h1 className="text-lg font-semibold text-slate-900">
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 px-4 text-slate-50">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center shadow-[0_24px_80px_-32px_rgba(0,0,0,0.7)] backdrop-blur">
+          <h1 className="text-lg font-semibold text-white">
             Not logged in
           </h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-200/80">
             Please use your magic link to access your dashboard.
           </p>
         </div>
@@ -291,8 +291,8 @@ function DashboardInner() {
 
   if (!profile) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-        <div className="rounded-xl border border-rose-100 bg-rose-50 p-6 text-center shadow-sm text-rose-700">
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 px-4 text-slate-50">
+        <div className="rounded-2xl border border-rose-300/30 bg-rose-500/10 p-6 text-center text-rose-50 shadow-[0_24px_80px_-32px_rgba(0,0,0,0.7)] backdrop-blur">
           Unable to load profile. Please refresh the page.
         </div>
       </main>
@@ -300,17 +300,17 @@ function DashboardInner() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-12">
+    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 pb-12 text-slate-50">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 pt-10">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200">
               Dashboard
             </p>
-            <h1 className="text-3xl font-semibold text-slate-900">
+            <h1 className="text-3xl font-semibold text-white">
               Profile & media
             </h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-200/80">
               Edit your details and upload up to seven images.
             </p>
           </div>

@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabaseServer";
 
-const bucketName = process.env.SUPABASE_STORAGE_BUCKET ?? "user-images";
+const bucketName =
+  process.env.SUPABASE_STORAGE_BUCKET ??
+  process.env.NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET ??
+  "uploads";
 
 export const runtime = "nodejs";
 
