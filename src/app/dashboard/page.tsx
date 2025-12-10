@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { User } from "@supabase/supabase-js";
 import { ImageGrid, type SlotState } from "@/components/dashboard/ImageGrid";
 import { ProfileForm } from "@/components/dashboard/ProfileForm";
 import { supabaseClient } from "@/lib/supabaseClient";
@@ -45,7 +44,7 @@ export default function DashboardPage() {
   }, []);
 
   const loadOrCreateProfile = useCallback(
-    async (user: User) => {
+    async (user: { id: string; email: string | null }) => {
       setBanner(null);
       const { data, error } = await supabaseClient
         .from("users_custom")
@@ -102,20 +101,8 @@ export default function DashboardPage() {
     [normalizeProfile],
   );
 
-  useEffect(() => {
-    async function bootstrap() {
-      const { data, error } = await supabaseClient.auth.getUser();
-      if (error || !data.user) {
-        setViewState({ status: "unauthenticated" });
-        return;
-      }
-      setViewState({ status: "ready", user: data.user });
-    }
-    void bootstrap();
-  }, []);
-
   const loadProfileWithState = useCallback(
-    async (user: User) => {
+    async (user: { id: string; email: string | null }) => {
       setLoadingProfile(true);
       try {
         await loadOrCreateProfile(user);
@@ -157,14 +144,17 @@ export default function DashboardPage() {
         setViewState({ status: "unauthenticated" });
         return;
       }
-      setViewState({ status: "ready", user: data.user });
+      setViewState({
+        status: "ready",
+        user: { id: data.user.id, email: data.user.email ?? null },
+      });
     }
     void bootstrap();
   }, [normalizeProfile, token]);
 
   useEffect(() => {
     if (viewState.status !== "ready" || token) return;
-    void loadProfileWithState(viewState.user as User);
+    void loadProfileWithState(viewState.user);
   }, [loadProfileWithState, token, viewState]);
 
   function handleProfileChange(key: keyof UsersCustom, value: string) {
