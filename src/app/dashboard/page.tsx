@@ -167,7 +167,15 @@ export default function DashboardPage() {
   function updateSlotState(slotIndex: number, partial: Partial<SlotState>) {
     setSlotStates((prev) => ({
       ...prev,
-      [slotIndex]: { uploading: false, ...prev[slotIndex], ...partial },
+      [slotIndex]: {
+        ...prev[slotIndex],
+        ...partial,
+        // default uploading to false when not provided
+        uploading:
+          partial.uploading !== undefined
+            ? partial.uploading
+            : prev[slotIndex]?.uploading ?? false,
+      },
     }));
   }
 
