@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabaseServer";
 
-const tableName = process.env.SUPABASE_PROFILE_TABLE ?? "profiles";
+const tableName = process.env.SUPABASE_PROFILE_TABLE ?? "users_custom";
 
 export const runtime = "nodejs";
 
