@@ -11,6 +11,7 @@ type Props = {
   profile: UsersCustom;
   slotStates: Record<number, SlotState>;
   publicBaseUrl: string;
+  bucketName: string;
   onFileSelected: (slotIndex: number, file: File) => void;
 };
 
@@ -18,6 +19,7 @@ export function ImageGrid({
   profile,
   slotStates,
   publicBaseUrl,
+  bucketName,
   onFileSelected,
 }: Props) {
   const imagePaths = [
@@ -56,6 +58,7 @@ export function ImageGrid({
               label={`Image ${slotIndex}`}
               imagePath={path}
               publicBaseUrl={publicBaseUrl}
+              bucketName={bucketName}
               uploading={state.uploading}
               selectedFileName={state.fileName}
               errorMessage={state.error}

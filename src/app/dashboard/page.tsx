@@ -217,7 +217,8 @@ function DashboardInner() {
     updateSlotState(slotIndex, { uploading: true, error: undefined, fileName: file.name });
 
     const extension = file.name.split(".").pop() || "bin";
-    const path = `${bucketName}/${profile.id}/image${slotIndex}-${Date.now()}.${extension}`;
+    // Store path relative to the bucket (do not prefix the bucket name)
+    const path = `${profile.id}/image${slotIndex}-${Date.now()}.${extension}`;
 
     const formData = new FormData();
     formData.append("file", file);
@@ -329,6 +330,7 @@ function DashboardInner() {
           <ImageGrid
             profile={profile}
             publicBaseUrl={publicStorageBaseUrl}
+            bucketName={bucketName}
             slotStates={slotStates}
             onFileSelected={handleFileSelected}
           />

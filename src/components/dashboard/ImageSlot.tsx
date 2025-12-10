@@ -4,6 +4,7 @@ type Props = {
   label: string;
   imagePath: string | null;
   publicBaseUrl: string;
+  bucketName: string;
   uploading: boolean;
   errorMessage?: string;
   selectedFileName?: string;
@@ -14,6 +15,7 @@ export function ImageSlot({
   label,
   imagePath,
   publicBaseUrl,
+  bucketName,
   uploading,
   errorMessage,
   selectedFileName,
@@ -22,7 +24,10 @@ export function ImageSlot({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const previewUrl =
     imagePath && publicBaseUrl
-      ? `${publicBaseUrl}/${imagePath}`
+      ? (() => {
+          const trimmed = imagePath.replace(/^\/+/, "");
+          return `${publicBaseUrl}/${bucketName}/${trimmed}`;
+        })()
       : null;
 
   return (
