@@ -23,7 +23,15 @@ type MagicLinkRecord = {
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const appBaseUrl = process.env.APP_BASE_URL || "http://localhost:3000";
+const appBaseUrl = (() => {
+  const raw = process.env.APP_BASE_URL || "http://localhost:3000";
+  try {
+    const parsed = new URL(raw);
+    return parsed.origin; // strip any path if provided
+  } catch {
+    return raw.replace(/\/+$/, "");
+  }
+})();
 
 function createToken(): { token: string; expiresAt: string } {
   const token = crypto.randomBytes(32).toString("base64url");
