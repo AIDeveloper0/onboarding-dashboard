@@ -31,6 +31,72 @@ function createToken(): { token: string; expiresAt: string } {
   return { token, expiresAt };
 }
 
+function buildMagicLinkEmail(links: string[]) {
+  const safeLinks = links.slice(0, 2);
+
+  const textLines = [
+    "Hi there,",
+    "",
+    "Your dashboard is ready. Use the magic links below (they expire in 3 days):",
+    ...safeLinks.map((link, idx) => `${idx + 1}. ${link}`),
+    "",
+    "If you didn't request this, you can ignore this email.",
+  ];
+
+  const buttons = safeLinks
+    .map(
+      (link, idx) => `
+        <tr>
+          <td align="center" style="padding: 10px 0;">
+            <a href="${link}" style="
+              display: inline-block;
+              background: linear-gradient(135deg, #10b981, #22d3ee);
+              color: #0b172a;
+              text-decoration: none;
+              font-weight: 600;
+              padding: 12px 18px;
+              border-radius: 999px;
+              font-size: 15px;
+              font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            ">
+              Open Dashboard (Link ${idx + 1})
+            </a>
+          </td>
+        </tr>`
+    )
+    .join("");
+
+  const html = `
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#0b172a;padding:32px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellpadding="0" cellspacing="0" width="520" style="background:#0f2136;border-radius:20px;padding:28px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 30px 80px -40px rgba(0,0,0,0.7);">
+          <tr>
+            <td style="text-align:center;padding-bottom:12px;">
+              <div style="font-size:12px;letter-spacing:0.2em;color:#34d399;text-transform:uppercase;font-weight:700;">Onboarding</div>
+              <div style="color:#e5e7eb;font-size:22px;font-weight:700;margin-top:6px;">Access your dashboard</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="color:#cbd5e1;font-size:15px;line-height:1.6;font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;padding-top:6px;padding-bottom:14px;">
+              Hi there,<br/><br/>
+              Your dashboard is ready. Use the magic links below (they expire in 3 days):
+            </td>
+          </tr>
+          ${buttons}
+          <tr>
+            <td style="padding-top:12px;color:#94a3b8;font-size:13px;line-height:1.6;font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;">
+              If you didn’t request this, you can safely ignore this email.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>`;
+
+  return { text: textLines.join("\n"), html };
+}
+
 async function sendMagicLinkEmail(to: string, links: string[]) {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM } = process.env;
 
@@ -51,20 +117,14 @@ async function sendMagicLinkEmail(to: string, links: string[]) {
     },
   });
 
-  const textLines = [
-    "Hi,",
-    "",
-    "Here are your dashboard magic links:",
-    ...links.map((link, idx) => `${idx + 1}. ${link}`),
-    "",
-    "They expire in 3 days.",
-  ];
+  const { text, html } = buildMagicLinkEmail(links);
 
   await transporter.sendMail({
     from: SMTP_FROM,
     to,
     subject: "Your dashboard magic links",
-    text: textLines.join("\n"),
+    text,
+    html,
   });
 
   return { sent: true as const };
