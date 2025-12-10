@@ -7,6 +7,8 @@ import { supabaseClient } from "@/lib/supabaseClient";
 import type { UsersCustom } from "@/types/user";
 import { useSearchParams } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 const bucketName =
   process.env.NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET || "user-images";
 
