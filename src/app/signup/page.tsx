@@ -1431,7 +1431,7 @@ export default function SignupPage() {
               </div>
 
               <div className="form-field">
-                <label htmlFor="boardNeeds">What should the board show'</label>
+                <label htmlFor="boardNeeds">What should the board show?</label>
                 <textarea
                   id="boardNeeds"
                   name="boardNeeds"
@@ -1446,7 +1446,7 @@ export default function SignupPage() {
                 disabled={status === "submitting"}
                 style={{ width: "100%", justifyContent: "center" }}
               >
-                {status === "submitting" ' "Submitting..." : "Submit inquiry"} <span>-&gt;</span>
+                {status === "submitting" ? "Submitting..." : "Submit inquiry"} <span>-&gt;</span>
               </button>
             </form>
             <div className="contact-note">
