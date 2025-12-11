@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabaseServer";
 import crypto from "crypto";
 
@@ -11,8 +11,8 @@ const imageFields = ["logo", "pic1", "pic2", "pic3", "pic4", "pic5", "qr"] as co
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request, { params }: { params: { admin_key: string } }) {
-  const adminKey = params.admin_key;
+export async function POST(request: NextRequest, { params }: { params: Promise<{ admin_key: string }> }) {
+  const { admin_key: adminKey } = await params;
   if (!adminKey) return NextResponse.json({ error: "Missing admin_key" }, { status: 400 });
 
   const formData = await request.formData();

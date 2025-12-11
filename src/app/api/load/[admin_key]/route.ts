@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabaseServer";
 
 const bucket =
@@ -32,8 +32,8 @@ const zmanimKeys = [
 
 export const runtime = "nodejs";
 
-export async function GET(_: Request, { params }: { params: { admin_key: string } }) {
-  const adminKey = params.admin_key;
+export async function GET(_: NextRequest, { params }: { params: Promise<{ admin_key: string }> }) {
+  const { admin_key: adminKey } = await params;
   if (!adminKey) return NextResponse.json({ error: "Missing admin_key" }, { status: 400 });
 
   const { data, error } = await supabaseServer

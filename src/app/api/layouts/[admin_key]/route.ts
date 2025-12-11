@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabaseServer";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(_: NextRequest) {
   // If you have a "layouts" table with a "name" column, return it; otherwise return an empty list.
   try {
     const { data, error } = await supabaseServer.from("layouts").select("name");
