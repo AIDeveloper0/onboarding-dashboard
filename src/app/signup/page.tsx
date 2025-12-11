@@ -149,8 +149,8 @@ export default function SignupPage() {
     if (formState.timeline) details.push(`Timeline: ${formState.timeline}`);
     if (formState.website) details.push(`Website: ${formState.website}`);
 
-    const summary = formState.boardNeeds'.trim() || "";
-    const extra = details.length > 0 ' `Details:\n${details.join("\n")}` : "";
+    const summary = formState.boardNeeds.trim() || "";
+    const extra = details.length > 0 ? `Details:\n${details.join("\n")}` : "";
 
     return [summary, extra].filter(Boolean).join("\n\n");
   }, [formState]);
@@ -200,15 +200,15 @@ export default function SignupPage() {
       });
 
       const payload = (await response.json().catch(() => ({}))) as {
-        error': string;
-        message': string;
-        links': string[];
-        info': string;
+        error?: string;
+        message?: string;
+        links?: string[];
+        info?: string;
       };
 
       if (!response.ok) {
         const duplicate =
-          payload.error'.includes("already registered") ||
+          payload.error?.includes("already registered") ||
           response.status === 409;
         if (duplicate) {
           setErrors({
@@ -217,18 +217,18 @@ export default function SignupPage() {
           });
         } else {
           setErrors({
-            general: payload.error '' "Something went wrong. Please try again.",
+            general: payload.error ?? "Something went wrong. Please try again.",
           });
         }
         setStatus("idle");
         return;
       }
 
-      setMagicLinks(payload.links '' []);
+      setMagicLinks(payload.links ?? []);
       if (payload.info) setInfoMessage(payload.info);
       setStatus("success");
       setSuccessMessage(
-        payload.message ''
+        payload.message ??
           "Signup complete. Check your email for your magic links.",
       );
     } catch (error) {
