@@ -343,6 +343,7 @@ export default function SignupPage() {
 
         .nav-links {
           display: flex;
+          align-items: center;
           gap: 1rem;
           font-size: 0.9rem;
           color: var(--text-soft);
@@ -352,11 +353,23 @@ export default function SignupPage() {
           padding: 0.3rem 0.7rem;
           border-radius: 999px;
           transition: 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          white-space: nowrap;
         }
 
         .nav-links a:hover {
           background: rgba(15, 23, 42, 0.9);
           color: #e5e7eb;
+        }
+
+        .nav-cta {
+          display: flex;
+          gap: 0.7rem;
+          align-items: center;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          min-width: 320px;
         }
 
         .pill,
