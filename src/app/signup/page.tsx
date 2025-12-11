@@ -25,7 +25,7 @@ type FieldErrors = Partial<Record<keyof FormState | "general", string>>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const demoDateText =
-  "Yom Kippur - 10 Tishrei 5786 - Thursday, October 2, 2025";
+  "Yom Kippur · 10 Tishrei 5786 · Thursday, October 2, 2025";
 
 const featureCards = [
   {
@@ -451,8 +451,9 @@ export default function SignupPage() {
           font-size: 0.8rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: var(--accent);
+          color: #6ac8f5;
           margin-bottom: 0.6rem;
+          font-weight: 700;
         }
 
         .hero h1 {
@@ -463,7 +464,7 @@ export default function SignupPage() {
         }
 
         .hero h1 .highlight {
-          background: linear-gradient(to right, #e0f2fe, #38bdf8);
+          background: linear-gradient(to right, #7ad8ff, #42b8f7);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
@@ -481,33 +482,26 @@ export default function SignupPage() {
           display: flex;
           flex-wrap: wrap;
           gap: 0.6rem;
-          margin-top: 1rem;
-          font-size: 0.86rem;
+          margin-top: 0.4rem;
+          font-size: 0.92rem;
         }
 
         .hero-badges span {
-          padding: 0.4rem 0.9rem;
+          padding: 0.45rem 0.95rem;
           border-radius: 999px;
-          border: 1px solid rgba(148, 163, 184, 0.5);
-          background: rgba(8, 17, 36, 0.9);
-          color: #dbeafe;
+          border: 1px solid rgba(148, 163, 184, 0.55);
+          background: rgba(6, 14, 30, 0.9);
+          color: #e7edf8;
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;
-          font-weight: 600;
+          font-weight: 700;
+          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
         }
 
         .hero-badges span strong {
-          color: #e0f2fe;
-          font-weight: 700;
-        }
-
-        .hero-actions {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 1rem;
-          margin-top: 1.6rem;
+          color: #f5f9ff;
+          font-weight: 800;
         }
 
         .hero-actions .secondary-link {
@@ -565,25 +559,47 @@ export default function SignupPage() {
           line-height: 1.6;
         }
 
-        .demo-panel {
-          background: radial-gradient(
-            circle at top,
-            #020617 0,
-            #020617 45%,
-            #000 100%
-          );
-          border-radius: var(--radius-xl);
-          border: 1px solid rgba(148, 163, 184, 0.5);
-          box-shadow: 0 22px 50px rgba(15, 23, 42, 0.85);
-          padding: 1.4rem 1.35rem 1.75rem;
+        .hero-panel {
+          background: radial-gradient(circle at 20% 0%, rgba(0, 178, 255, 0.1), rgba(6, 19, 38, 0.95));
+          border: 1px solid rgba(148, 163, 184, 0.4);
+          border-radius: 26px;
+          box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
+          padding: 1.35rem 1.35rem 1.8rem;
+          width: 100%;
+          color: #e5e7eb;
         }
 
-        .demo-header {
+        .panel-header {
           display: flex;
-          justify-content: space-between;
           align-items: flex-start;
-          margin-bottom: 1.1rem;
+          justify-content: space-between;
           gap: 1rem;
+          margin-bottom: 0.9rem;
+        }
+
+        .panel-title {
+          font-size: 1.05rem;
+          font-weight: 700;
+        }
+
+        .panel-meta {
+          font-size: 0.9rem;
+          color: #cbd5f5;
+          line-height: 1.4;
+        }
+
+        .panel-time {
+          text-align: right;
+          font-size: 1.4rem;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+        }
+
+        .panel-date {
+          font-size: 0.88rem;
+          color: #cbd5f5;
+          margin-top: 0.2rem;
+          text-align: right;
         }
 
         .demo-title {
@@ -1127,46 +1143,21 @@ export default function SignupPage() {
 
             <div className="hero-badges">
               <span>
-                <strong>Hebrew calendar aware</strong> - parasha, moadim, yomim tovim
+                <strong>Hebrew calendar-aware</strong> - parasha, moadim, yomim tovim
               </span>
-              <span>
-                Auto-updated <strong>zmanim and minyan times</strong>
-              </span>
-              <span>
-                <strong>Emergency overlay</strong> for security or weather notices
-              </span>
-            </div>
-
-            <div className="hero-actions">
-              <button type="button" className="btn-primary" onClick={scrollToContact}>
-                Get early-access pricing <span>-&gt;</span>
-              </button>
-              <a href="#demo" className="secondary-link">
-                See the live board layout <span>v</span>
-              </a>
-            </div>
-
-            <div className="trust-text">
-              Inspired by leading synagogue display systems, reimagined as a modern,
-              browser-based platform you can run on <strong>any computer + TV</strong>.
-            </div>
-
-            <div className="beta-note-hero">
-              <strong>Early-access program:</strong> we are currently operating in a
-              controlled beta. Approved synagogues receive{" "}
-              <span>complimentary usage during the beta</span> while we refine and harden
-              the platform.
             </div>
           </div>
-          <div id="demo" className="demo-panel">
-            <div className="demo-header">
+          <div id="demo" className="hero-panel">
+            <div className="panel-header">
               <div>
-                <div className="demo-title">Main Shul Lobby Display</div>
-                <div className="demo-location">Beth Torah Synagogue - Los Angeles, CA</div>
+                <div className="panel-title">Main Shul Lobby Display</div>
+                <div className="panel-meta">
+                  Beth Torah Synagogue - Los Angeles, CA
+                </div>
               </div>
               <div>
-                <div className="demo-time">{clockTime.toUpperCase()}</div>
-                <div className="demo-date">{demoDateText}</div>
+                <div className="panel-time">{clockTime.toUpperCase()}</div>
+                <div className="panel-date">{demoDateText}</div>
               </div>
             </div>
 
