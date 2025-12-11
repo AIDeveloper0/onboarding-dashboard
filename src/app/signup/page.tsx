@@ -433,11 +433,18 @@ export default function SignupPage() {
         .hero {
           max-width: var(--max-width);
           margin: 0 auto;
-          padding: 3rem 1.5rem;
+          padding: 3.25rem 1.5rem 3.25rem;
           display: grid;
-          grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.05fr);
-          gap: 2.5rem;
-          align-items: center;
+          grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+          gap: 3rem;
+          align-items: start;
+        }
+
+        .hero-copy {
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+          max-width: 760px;
         }
 
         .hero-eyebrow {
@@ -450,8 +457,9 @@ export default function SignupPage() {
 
         .hero h1 {
           margin: 0;
-          font-size: clamp(2.3rem, 3.3vw, 2.9rem);
-          line-height: 1.08;
+          font-size: clamp(2.8rem, 4vw, 3.9rem);
+          line-height: 1.05;
+          font-weight: 800;
         }
 
         .hero h1 .highlight {
@@ -462,43 +470,44 @@ export default function SignupPage() {
         }
 
         .hero-subtitle {
-          margin-top: 1.1rem;
+          margin-top: 0.5rem;
           color: var(--text-soft);
-          font-size: 1rem;
-          line-height: 1.7;
-          max-width: 34rem;
+          font-size: 1.05rem;
+          line-height: 1.8;
+          max-width: 44rem;
         }
 
         .hero-badges {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5rem;
-          margin-top: 1.4rem;
-          font-size: 0.8rem;
+          gap: 0.6rem;
+          margin-top: 1rem;
+          font-size: 0.86rem;
         }
 
         .hero-badges span {
-          padding: 0.35rem 0.8rem;
+          padding: 0.4rem 0.9rem;
           border-radius: 999px;
-          border: 1px solid rgba(148, 163, 184, 0.6);
-          background: rgba(15, 23, 42, 0.92);
-          color: var(--text-soft);
+          border: 1px solid rgba(148, 163, 184, 0.5);
+          background: rgba(8, 17, 36, 0.9);
+          color: #dbeafe;
           display: inline-flex;
           align-items: center;
-          gap: 0.3rem;
+          gap: 0.35rem;
+          font-weight: 600;
         }
 
         .hero-badges span strong {
-          color: #e5e7eb;
-          font-weight: 600;
+          color: #e0f2fe;
+          font-weight: 700;
         }
 
         .hero-actions {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          gap: 1.1rem;
-          margin-top: 1.9rem;
+          gap: 1rem;
+          margin-top: 1.6rem;
         }
 
         .hero-actions .secondary-link {
@@ -1103,7 +1112,7 @@ export default function SignupPage() {
 
       <main>
         <section className="hero" id="top">
-          <div>
+          <div className="hero-copy">
             <div className="hero-eyebrow">Hebrew calendar digital signage</div>
             <h1>
               Live <span className="highlight">zmanim, Hebrew dates, and alerts</span>
