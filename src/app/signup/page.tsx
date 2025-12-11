@@ -90,11 +90,11 @@ const steps = [
 ];
 
 const weatherDays = [
-  { label: "Today", icon: "Sun", temp: "78F", low: "Night - 62F" },
-  { label: "Fri", icon: "Clouds", temp: "76F", low: "60F" },
-  { label: "Shabbat", icon: "Sun/Cloud", temp: "74F", low: "59F" },
-  { label: "Sun", icon: "Showers", temp: "71F", low: "58F" },
-  { label: "Mon", icon: "Clouds", temp: "72F", low: "57F" },
+  { label: "Today", icon: "☀️", temp: "78°F", low: "Night 60°F" },
+  { label: "Fri", icon: "🌤️", temp: "76°F", low: "59°F" },
+  { label: "Shabbat", icon: "🌤️", temp: "74°F", low: "59°F" },
+  { label: "Sun", icon: "🌧️", temp: "71°F", low: "58°F" },
+  { label: "Mon", icon: "☁️", temp: "72°F", low: "57°F" },
 ];
 const shulSchedule = [
   { label: "Shacharit", time: "8:30 AM", room: "Main Sanctuary" },
@@ -435,8 +435,8 @@ export default function SignupPage() {
           margin: 0 auto;
           padding: 3.25rem 1.5rem 3.25rem;
           display: grid;
-          grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-          gap: 3rem;
+          grid-template-columns: minmax(0, 1fr) 520px;
+          gap: 2.4rem;
           align-items: start;
         }
 
@@ -560,13 +560,15 @@ export default function SignupPage() {
         }
 
         .hero-panel {
-          background: radial-gradient(circle at 20% 0%, rgba(0, 178, 255, 0.1), rgba(6, 19, 38, 0.95));
-          border: 1px solid rgba(148, 163, 184, 0.4);
+          background: #0a1628;
+          border: 1px solid rgba(148, 163, 184, 0.32);
           border-radius: 26px;
           box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
-          padding: 1.35rem 1.35rem 1.8rem;
+          padding: 1.3rem 1.25rem 1.25rem;
           width: 100%;
           color: #e5e7eb;
+          display: grid;
+          gap: 0.9rem;
         }
 
         .panel-header {
@@ -574,7 +576,7 @@ export default function SignupPage() {
           align-items: flex-start;
           justify-content: space-between;
           gap: 1rem;
-          margin-bottom: 0.9rem;
+          margin-bottom: 1rem;
         }
 
         .panel-title {
@@ -590,7 +592,7 @@ export default function SignupPage() {
 
         .panel-time {
           text-align: right;
-          font-size: 1.4rem;
+          font-size: 1.5rem;
           font-weight: 800;
           letter-spacing: 0.04em;
         }
@@ -629,13 +631,14 @@ export default function SignupPage() {
         }
 
         .demo-card {
-          background: rgba(8, 15, 36, 0.8);
+          background: rgba(10, 22, 40, 0.75);
           border-radius: var(--radius-lg);
           border: 1px solid rgba(148, 163, 184, 0.4);
-          padding: 1rem;
+          padding: 0.95rem;
           display: flex;
           flex-direction: column;
-          gap: 0.9rem;
+          gap: 0.8rem;
+          height: 100%;
         }
 
         .demo-card-header {
@@ -655,8 +658,8 @@ export default function SignupPage() {
 
         .zmanim-table {
           display: grid;
-          grid-template-columns: 2fr 1fr 1.2fr;
-          gap: 0.35rem 0.6rem;
+          grid-template-columns: 2fr 1fr 1.1fr;
+          gap: 0.28rem 0.55rem;
           font-size: 0.88rem;
         }
 
@@ -676,8 +679,8 @@ export default function SignupPage() {
         .parasha {
           display: flex;
           justify-content: space-between;
-          gap: 0.8rem;
-          font-size: 0.9rem;
+          gap: 0.6rem;
+          font-size: 0.88rem;
           color: var(--text-soft);
           flex-wrap: wrap;
         }
@@ -688,8 +691,8 @@ export default function SignupPage() {
         }
 
         .demo-note {
-          font-size: 0.78rem;
-          color: #9ca3af;
+          font-size: 0.82rem;
+          color: #cbd5f5;
           line-height: 1.5;
         }
 
@@ -1172,7 +1175,7 @@ export default function SignupPage() {
                   <div className="zman-time">6:35 PM</div>
                   <div className="zman-note">Service start</div>
 
-                  <div className="zman-label">Ne'ilah</div>
+                  <div className="zman-label">Ne&apos;ilah</div>
                   <div className="zman-time">5:30 PM</div>
                   <div className="zman-note">Final tefillah</div>
 
@@ -1200,13 +1203,13 @@ export default function SignupPage() {
                   </div>
                   <div>
                     <div className="parasha-ref">Shacharit: 8:30 AM</div>
-                    <div className="parasha-ref">Ne'ilah and shofar: ~7:10 PM</div>
+                    <div className="parasha-ref">Ne&apos;ilah and shofar: ~7:10 PM</div>
                   </div>
                 </div>
 
                 <div className="demo-note">
                   Times shown here are for demonstration only. In production, all zmanim and fast
-                  times are calculated automatically for your shul's exact location and minhag.
+                  times are calculated automatically for your shul&apos;s exact location and minhag.
                 </div>
               </div>
 
@@ -1343,7 +1346,7 @@ export default function SignupPage() {
                   />
                 </div>
                 <div className="form-field">
-                  <label htmlFor="rabbiName">Rabbi's name</label>
+                  <label htmlFor="rabbiName">Rabbi&apos;s name</label>
                   <input
                     id="rabbiName"
                     name="rabbiName"
@@ -1411,7 +1414,7 @@ export default function SignupPage() {
                   />
                 </div>
                 <div className="form-field">
-                  <label htmlFor="timeline">When do you want to start'</label>
+                  <label htmlFor="timeline">When do you want to start?</label>
                   <select
                     id="timeline"
                     name="timeline"
@@ -1505,7 +1508,7 @@ export default function SignupPage() {
           <div className="footer-disclaimer">
             <strong>Beta testing disclaimer:</strong> zmanim.tv is currently in beta testing and may
             contain bugs, defects, or inaccuracies. The service, including all displayed times,
-            dates, alerts, and content, is provided on an \"as-is\" and \"as-available\" basis without
+            dates, alerts, and content, is provided on an &quot;as-is&quot; and &quot;as-available&quot; basis without
             warranties of accuracy, availability, or fitness for a particular purpose. By using the
             service you agree we are not liable for errors, outages, or any loss or damage arising
             from reliance on the information shown on the displays.
